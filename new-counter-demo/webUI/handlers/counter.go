@@ -12,6 +12,8 @@ const (
 	IP = "127.0.0.1"
 )
 
+var edgeAPIBaseURL = "http://" + IP + ":30077"
+
 func isSuccessStatus(statusCode int) bool {
 	return statusCode >= http.StatusOK && statusCode < http.StatusMultipleChoices
 }
@@ -31,7 +33,7 @@ type EdgeAPIResponse struct {
 }
 
 func GetCounter(c *gin.Context) {
-	url := "http://" + IP + ":30077/api/v1/device/default/counter-instance/count"
+	url := edgeAPIBaseURL + "/api/v1/device/default/counter-instance/count"
 	resp, err := http.Get(url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
@@ -54,7 +56,7 @@ func GetCounter(c *gin.Context) {
 }
 
 func GetStatus(c *gin.Context) {
-	url := "http://" + IP + ":30077/api/v1/device/default/counter-instance/status"
+	url := edgeAPIBaseURL + "/api/v1/device/default/counter-instance/status"
 	resp, err := http.Get(url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to get switch status" + err.Error()})
@@ -78,7 +80,7 @@ func GetStatus(c *gin.Context) {
 func SetStatus(c *gin.Context) {
 	Status := c.Query("status")
 
-	url := "http://" + IP + ":30077/api/v1/devicemethod/default/counter-instance/UpdateStatus/status/" + Status
+	url := edgeAPIBaseURL + "/api/v1/devicemethod/default/counter-instance/UpdateStatus/status/" + Status
 	resp, err := http.Get(url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to set switch status" + err.Error()})
@@ -94,7 +96,7 @@ func SetStatus(c *gin.Context) {
 }
 
 func ResetCount(c *gin.Context) {
-	url := "http://" + IP + ":30077/api/v1/devicemethod/default/counter-instance/SetCount/count/0"
+	url := edgeAPIBaseURL + "/api/v1/devicemethod/default/counter-instance/SetCount/count/0"
 	resp, err := http.Get(url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to reset count" + err.Error()})
@@ -110,7 +112,7 @@ func ResetCount(c *gin.Context) {
 
 func SetCount(c *gin.Context) {
 	Count := c.Query("count")
-	url := "http://" + IP + ":30077/api/v1/devicemethod/default/counter-instance/SetCount/count/" + Count
+	url := edgeAPIBaseURL + "/api/v1/devicemethod/default/counter-instance/SetCount/count/" + Count
 	resp, err := http.Get(url)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to set count" + err.Error()})
